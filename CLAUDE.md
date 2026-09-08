@@ -15,7 +15,7 @@ Spring Boot 4.1.0 / Spring AI 2.0.0 / Java 26. Not a git repository.
 ## Commands
 
 ```powershell
-.\mvnw.cmd spring-boot:run                 # run the app (port 8096)
+.\mvnw.cmd spring-boot:run                 # run the app (port 8088)
 .\mvnw.cmd package                         # build
 .\mvnw.cmd -DskipTests package             # build without tests
 .\mvnw.cmd test                            # all tests
@@ -58,7 +58,7 @@ automatically** (and `spring.docker.compose.stop.command=down` tears it down on 
 
 Chat memory and helpdesk tickets persist to a **file-based H2 database outside the repo**
 (`C:\Users\soume\OneDrive\Documents\chatmemory`, `AUTO_SERVER=true`). Data therefore survives restarts
-and is shared across runs; the H2 console is at http://localhost:8096/h2-console using the JDBC URL
+and is shared across runs; the H2 console is at http://localhost:8088/h2-console using the JDBC URL
 and credentials from `application.properties`.
 
 `WebSearchDocumentRetriever` calls the external Tavily search API.
@@ -125,9 +125,13 @@ degrades. `RandomDataLoader` (55 trivia sentences) is disabled by a commented-ou
 
 Do not "fix" these incidentally without being asked, but be aware they exist:
 
-- `application.properties:4` and `WebSearchDocumentRetriever.java:22` contain **live plaintext API
-  keys** (OpenAI, Tavily), plus H2 credentials. Anything touching these files should move them to
-  environment variables rather than propagating the pattern.
+- API keys now come from the environment: `application.properties` uses `${OPENAI_API_KEY}` and
+  `WebSearchDocumentRetriever.java:22` uses `System.getenv("TAVILY_API_KEY")`. Keep it that way — a
+  hardcoded Tavily key was previously committed to the public GitHub remote and is still in history.
+- `WebSearchDocumentRetriever.java:31` has its `Assert.hasText` guard commented out, so an unset
+  `TAVILY_API_KEY` yields a `Bearer null` header and fails at request time instead of startup. The
+  assert's message also interpolates the key's *value*, not the variable name.
+- `application.properties:13-14` hold plaintext H2 credentials, though for a local file DB.
 - `ChatController.java:21` — `@RequestParam(" ")`, a single space as the parameter name; almost
   certainly meant to be `"message"`, so `/api/chat` cannot be called normally.
 - `ChatClientConfig` calls `.defaultAdvisors(...)` twice in a chain; the second call may replace

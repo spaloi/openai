@@ -19,7 +19,7 @@ public class WebSearchDocumentRetriever implements DocumentRetriever {
 
     private static final Logger logger = LoggerFactory.getLogger(WebSearchDocumentRetriever.class);
 
-    private static final String TAVILY_API_KEY = "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";
+    private static final String TAVILY_API_KEY = System.getenv("TAVILY_API_KEY");
     private static final String TAVILY_BASE_URL = "https://api.tavily.com/search";
     private static final int DEFAULT_RESULT_LIMIT = 5;
     private final int resultLimit;

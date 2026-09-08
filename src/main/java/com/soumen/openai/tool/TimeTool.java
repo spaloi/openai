@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.util.List;
 
 
 @Component
@@ -24,5 +25,10 @@ public class TimeTool {
     String getCurrentZoneTime(@ToolParam(description = "Value representing timeZone") String timeZone){
         LOGGER.info("returning current time to the given timezone {}",timeZone);
         return LocalTime.now(ZoneId.of(timeZone)).toString();
+    }
+    @Tool(name ="getAvailableTimeZones",description = "Get the list of all available timezone ids")
+    List<String> getAvailableTimeZones(){
+        LOGGER.info("returning the list of available timezones");
+        return ZoneId.getAvailableZoneIds().stream().sorted().toList();
     }
 }

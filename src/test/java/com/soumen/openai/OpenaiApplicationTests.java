@@ -16,7 +16,7 @@ import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
 @TestPropertySource(properties ={
-		"spring.ai.openai.api-key=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",
+			"spring.ai.openai.api-key=${OPENAI_API_KEY}",
 		"logging.level.org.springframework.ai.chat.client.advisor=DEBUG"
        } )
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)

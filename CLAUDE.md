@@ -10,7 +10,9 @@ calling, RAG (vector store + live web search), and semantic caching. It is a han
 project, not a product — expect commented-out alternatives left in place deliberately (Redis-backed
 semantic cache, local Docker Model Runner base URL, `RandomDataLoader`).
 
-Spring Boot 4.1.0 / Spring AI 2.0.0 / Java 26. Not a git repository.
+Spring Boot 4.1.0 / Spring AI 2.0.0 / Java 26. Git repository on branch `main`, pushed to the public
+GitHub remote `spaloi/openai`. Claude Code Actions are installed (`.github/workflows/claude.yml` for
+`@claude` mentions, `claude-code-review.yml` for automatic PR review).
 
 ## Commands
 
